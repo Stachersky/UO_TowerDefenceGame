@@ -1,11 +1,14 @@
 using UnityEngine;
-using System.Collections.Generic; // Potrzebne do obs³ugi Listy
+using System.Collections.Generic;
 
 public class Tower : MonoBehaviour
 {
     [Header("Ustawienia wie¿y")]
     public float rotationSpeed = 5f;
-    public float fireRate = 1f; // Strza³ co X sekund (przygotowanie pod KAN-28)
+    public float fireRate = 1f; // Strza³ co 1 sekundê
+    public float damage = 25f;  // Ile HP zabiera jeden strza³
+
+    private float fireCountdown = 0f; // Wewnêtrzny stoper wie¿y
 
     [Header("Celowanie")]
     public List<GameObject> enemiesInRange = new List<GameObject>();
@@ -15,39 +18,58 @@ public class Tower : MonoBehaviour
     {
         UpdateTarget();
         RotateTowardsTarget();
+
+        // Jeœli mamy cel, zaczynamy strzelaæ
+        if (currentTarget != null)
+        {
+            // Odliczanie do nastêpnego strza³u
+            fireCountdown -= Time.deltaTime;
+
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                fireCountdown = 1f / fireRate; // Reset stopera (np. 1/1 = 1 sekunda)
+            }
+        }
     }
 
-    // Funkcja wybieraj¹ca cel z listy wrogów w zasiêgu
+    void Shoot()
+    {
+        // Sprawdzamy, czy cel na pewno ma nasz skrypt zdrowia
+        EnemyHealth enemyHealth = currentTarget.GetComponent<EnemyHealth>();
+
+        if (enemyHealth != null)
+        {
+            enemyHealth.TakeDamage(damage);
+        }
+    }
+
+    // --- Poni¿ej zostaje to samo, co mieliœmy wczeœniej ---
+
     void UpdateTarget()
     {
-        // Jeœli aktualny cel zgin¹³ lub uciek³, czyœcimy go
         if (currentTarget != null && !enemiesInRange.Contains(currentTarget))
         {
             currentTarget = null;
         }
 
-        // Jeœli nie mamy celu, a ktoœ jest w zasiêgu - bierzemy pierwszego z brzegu
         if (currentTarget == null && enemiesInRange.Count > 0)
         {
             currentTarget = enemiesInRange[0];
         }
     }
 
-    // Obracanie wie¿y (trójk¹ta) w stronê przeciwnika
     void RotateTowardsTarget()
     {
         if (currentTarget == null) return;
 
-        // Obliczanie kierunku
         Vector3 direction = currentTarget.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // Obrót (odejmujemy 90 stopni, jeœli trójk¹t domyœlnie patrzy w górê)
         Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90f);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-    // Wykrywanie wchodzenia w zasiêg (Trigger)
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
@@ -56,7 +78,6 @@ public class Tower : MonoBehaviour
         }
     }
 
-    // Wykrywanie wychodzenia z zasiêgu
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
