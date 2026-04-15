@@ -25,10 +25,20 @@ public class EnemyMovement : MonoBehaviour
         }
         else
         {
-            // Przeciwnik dotar³ na koniec œcie¿ki (do bazy)
-            Destroy(gameObject);
+            // Szukamy obiektu z tagiem Base
+            GameObject gameBase = GameObject.FindWithTag("Base");
 
-            // TODO dla zadania KAN-21: Tutaj dodamy kod odbieraj¹cy HP bazie!
+            if (gameBase != null)
+            {
+                BaseHealth baseHealth = gameBase.GetComponent<BaseHealth>();
+                if (baseHealth != null)
+                {
+                    baseHealth.TakeDamage(10f); // Zadaje 10 obra¿eñ (zadanie KAN-21)
+                }
+            }
+
+            Destroy(gameObject); // Przeciwnik znika po ataku
         }
     }
+
 }
