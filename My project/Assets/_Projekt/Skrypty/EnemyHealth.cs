@@ -2,38 +2,43 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [Header("Statystyki (KAN-19)")]
+    [Header("KAN-19 - Statystyki przeciwnika")]
     public float maxHealth = 100f;
     private float currentHealth;
 
-    void Start()
+    [Header("KAN-36 - Nagroda za zabicie przeciwnika")]
+    public int rewardGold = 10;
+
+    private void Start()
     {
-        // Na start przeciwnik ma pe³ne zdrowie
         currentHealth = maxHealth;
     }
 
-    // Tê funkcjê bêdzie wywo³ywaæ wie¿yczka, gdy strzeli w przeciwnika
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
 
-        // Wyœwietlamy w konsoli, ¿eby widzieæ, ¿e dzia³a (do testów)
-        Debug.Log(gameObject.name + " dosta³ obra¿enia! Zosta³o HP: " + currentHealth);
+        Debug.Log(gameObject.name + " dostal obrazenia! Zostalo HP: " + currentHealth);
 
-        // Sprawdzamy, czy HP spad³o do zera
         if (currentHealth <= 0)
         {
             Die();
         }
     }
 
-    void Die()
+    private void Die()
     {
-        // Zadanie KAN-22: Usuwanie przeciwnika po œmierci
         Debug.Log("Przeciwnik pokonany!");
 
-        // TODO dla zadania KAN-36: Tutaj w przysz³oœci dodamy dodawanie z³ota graczowi
+        if (PlayerCurrency.Instance != null)
+        {
+            PlayerCurrency.Instance.AddGold(rewardGold);
+        }
+        else
+        {
+            Debug.LogWarning("Brak obiektu PlayerCurrency na scenie!");
+        }
 
-        Destroy(gameObject); // Usuwa ca³kowicie obiekt przeciwnika ze sceny
+        Destroy(gameObject);
     }
 }
