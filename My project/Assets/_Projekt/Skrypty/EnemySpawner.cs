@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Ustawienia Spawnera (KAN-60)")]
+    
     public GameObject enemyPrefab;
     public Transform spawnPoint;
     public float spawnInterval = 2f;
 
-    [Header("Œcie¿ka dla przeciwników")]
+    
     public Transform[] waypoints;     // <--- DODANE: Spawner trzyma listê punktów
 
     private float timer = 0f;

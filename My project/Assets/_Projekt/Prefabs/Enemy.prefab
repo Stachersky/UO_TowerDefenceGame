@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  rewardGold: 10
 --- !u!58 &8093196412129222655
 CircleCollider2D:
   m_ObjectHideFlags: 0

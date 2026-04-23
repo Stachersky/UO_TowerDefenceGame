@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [Header("KAN-19 - Statystyki przeciwnika")]
+    
     public float maxHealth = 100f;
     private float currentHealth;
 
-    [Header("KAN-36 - Nagroda za zabicie przeciwnika")]
+    
     public int rewardGold = 10;
 
     private void Start()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerCurrency : MonoBehaviour
 {
-    [Header("KAN-33 - Waluta (gold)")]
+    
     public int startingGold = 100;
     private int currentGold;
 

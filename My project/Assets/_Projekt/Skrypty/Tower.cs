@@ -5,10 +5,10 @@ public class Tower : MonoBehaviour
 {
     [Header("Ustawienia wie¿y")]
     public float rotationSpeed = 5f;
-    public float fireRate = 1f; // Strza³ co 1 sekundê
-    public float damage = 25f;  // Ile HP zabiera jeden strza³
+    public float fireRate = 1f;
+    public float damage = 25f; 
 
-    private float fireCountdown = 0f; // Wewnêtrzny stoper wie¿y
+    private float fireCountdown = 0f;
 
     [Header("Celowanie")]
     public List<GameObject> enemiesInRange = new List<GameObject>();
@@ -19,23 +19,23 @@ public class Tower : MonoBehaviour
         UpdateTarget();
         RotateTowardsTarget();
 
-        // Jeœli mamy cel, zaczynamy strzelaæ
+        
         if (currentTarget != null)
         {
-            // Odliczanie do nastêpnego strza³u
+            
             fireCountdown -= Time.deltaTime;
 
             if (fireCountdown <= 0f)
             {
                 Shoot();
-                fireCountdown = 1f / fireRate; // Reset stopera (np. 1/1 = 1 sekunda)
+                fireCountdown = 1f / fireRate;
             }
         }
     }
 
     void Shoot()
     {
-        // Sprawdzamy, czy cel na pewno ma nasz skrypt zdrowia
+        
         EnemyHealth enemyHealth = currentTarget.GetComponent<EnemyHealth>();
 
         if (enemyHealth != null)
@@ -44,7 +44,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    // --- Poni¿ej zostaje to samo, co mieliœmy wczeœniej ---
+    
 
     void UpdateTarget()
     {
