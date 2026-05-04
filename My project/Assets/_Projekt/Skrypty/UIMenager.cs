@@ -1,5 +1,6 @@
 using UnityEngine;
-using TMPro; // Ta linijka jest BARDZO WA¯NA - pozwala u¿ywaæ TextMeshPro!
+using UnityEngine.UI; // Potrzebne do obs³ugi paska (Slider)
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -8,41 +9,63 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI timeText;
 
+    [Header("Pasek Zdrowia Bazy")]
+    public Slider baseHealthSlider;
+    public BaseHealth baseHealthScript; // Podpinamy bazê, ¿eby znaæ jej HP
+
     [Header("Skrypty z logik¹ gry")]
     public EnemySpawner spawner;
+
+    void Start()
+    {
+        // Na start ustawiamy maksymalne zdrowie paska (¿eby wiedzia³, co to znaczy 100%)
+        if (baseHealthScript != null)
+        {
+            baseHealthSlider.maxValue = baseHealthScript.health;
+            baseHealthSlider.value = baseHealthScript.health;
+        }
+    }
 
     void Update()
     {
         UpdateGoldUI();
         UpdateWaveUI();
+        UpdateTimerUI();
+        UpdateHealthUI();
     }
 
     void UpdateGoldUI()
     {
-        // Pobieramy z³oto z Singletona (skrypt kolegi)
         if (PlayerCurrency.Instance != null)
-        {
             goldText.text = "Z³oto: " + PlayerCurrency.Instance.GetCurrentGold();
-        }
     }
 
     void UpdateWaveUI()
     {
         if (spawner != null)
-        {
-            // Aktualizacja numeru fali
             waveText.text = "Fala: " + spawner.waveIndex;
+    }
 
-            // Logika timera
-            if (spawner.isSpawning)
-            {
-                timeText.text = "Czas: Atak!";
-            }
-            else
-            {
-                // Mathf.Ceil zaokr¹gla u³amki w górê (np. 2.3 sekundy wyœwietli jako 3)
-                timeText.text = "Czas: " + Mathf.Ceil(spawner.countdown).ToString();
-            }
+    void UpdateTimerUI()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver == false)
+        {
+            float time = GameManager.Instance.timeElapsed; // ZMIANA: czytamy czas w górê
+
+            // Formatowanie sekund na minuty i sekundy
+            int minutes = Mathf.FloorToInt(time / 60f);
+            int seconds = Mathf.FloorToInt(time % 60f);
+
+            timeText.text = string.Format("Czas: {0:00}:{1:00}", minutes, seconds);
+        }
+    }
+
+    void UpdateHealthUI()
+    {
+        if (baseHealthScript != null)
+        {
+            // Aktualizacja zielonego paska
+            baseHealthSlider.value = baseHealthScript.health;
         }
     }
 }

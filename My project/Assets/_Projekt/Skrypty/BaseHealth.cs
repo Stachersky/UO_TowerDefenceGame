@@ -12,14 +12,8 @@ public class BaseHealth : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
-            GameOver();
+            GameManager.Instance.LoseGame();
         }
     }
 
-    void GameOver()
-    {
-        Debug.Log("PRZEGRANA! Baza zniszczona.");
-        // Tu w przysz³oœci (KAN-51) dodamy ekran koñca gry
-        Time.timeScale = 0f; // Zatrzymuje czas w grze
-    }
 }
