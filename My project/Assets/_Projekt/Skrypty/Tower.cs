@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class Tower : MonoBehaviour
 {
@@ -7,19 +9,45 @@ public class Tower : MonoBehaviour
     public float fireRate = 1f;
     public float damage = 25f;
 
-    [Header("Efekt zamra¿ania (Tylko wie¿a Medium)")]
+    [Header("Ulepszenia")]
+    public int level = 1;
+    public int maxLevel = 3;
+    public int upgradeCost = 50;
+
+    [Header("Efekt zamra¿ania")]
     [Range(0f, 1f)]
-    public float slowPercentage = 0f; // 0 = brak, 0.5 = spowolnienie o 50%
-    public float slowDuration = 0f;   // Jak d³ugo trwa efekt w sekundach
+    public float slowPercentage = 0f;
+    public float slowDuration = 0f;
 
     [Header("Pocisk")]
     public GameObject projectilePrefab;
+
+    [Header("Tekst poziomu nad wie¿¹")]
+    public TextMeshPro levelText;
 
     private float fireCountdown = 0f;
 
     [Header("System celowania")]
     public List<GameObject> enemiesInRange = new List<GameObject>();
     public GameObject currentTarget;
+
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+    private Vector3 originalScale;
+
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
+
+        originalScale = transform.localScale;
+
+        UpdateLevelText();
+    }
 
     void Update()
     {
@@ -44,7 +72,6 @@ public class Tower : MonoBehaviour
 
         if (projectile != null)
         {
-            // ZMIANA: Przekazujemy pociskowi równie¿ dane o spowolnieniu
             projectile.Seek(currentTarget.transform, damage, slowPercentage, slowDuration);
         }
     }
@@ -62,6 +89,73 @@ public class Tower : MonoBehaviour
         {
             currentTarget = enemiesInRange[0];
         }
+    }
+
+    private void OnMouseDown()
+    {
+        UpgradeUIManager.Instance.SelectTower(this);
+    }
+
+    public void UpgradeTower()
+    {
+        if (level >= maxLevel)
+        {
+            Debug.Log("Wie¿a ma maksymalny poziom.");
+            return;
+        }
+
+        if (PlayerCurrency.Instance == null)
+        {
+            Debug.Log("Brak PlayerCurrency.");
+            return;
+        }
+
+        if (PlayerCurrency.Instance.SpendGold(upgradeCost))
+        {
+            level++;
+
+            damage += 10f;
+            fireRate += 0.5f;
+
+            upgradeCost += 50;
+
+            UpdateLevelText();
+
+            StartCoroutine(UpgradeEffect());
+
+            Debug.Log("Ulepszono wie¿ê do poziomu: " + level);
+        }
+        else
+        {
+            Debug.Log("Za ma³o z³ota na ulepszenie.");
+        }
+    }
+
+    public void UpdateLevelText()
+    {
+        if (levelText != null)
+        {
+            levelText.text = level.ToString();
+        }
+    }
+
+    IEnumerator UpgradeEffect()
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.yellow;
+        }
+
+        transform.localScale = originalScale * 1.2f;
+
+        yield return new WaitForSeconds(0.2f);
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = originalColor;
+        }
+
+        transform.localScale = originalScale;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
