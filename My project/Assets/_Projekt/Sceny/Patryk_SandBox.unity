@@ -4632,6 +4632,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2072720727194455814, guid: b3a008a1e33948448a479099bde3b633, type: 3}
+      propertyPath: timeBetweenWaves
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072720727194455814, guid: b3a008a1e33948448a479099bde3b633, type: 3}
+      propertyPath: timeBetweenEnemies
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072720727194455814, guid: b3a008a1e33948448a479099bde3b633, type: 3}
       propertyPath: waypoints.Array.size
       value: 33
       objectReference: {fileID: 0}
