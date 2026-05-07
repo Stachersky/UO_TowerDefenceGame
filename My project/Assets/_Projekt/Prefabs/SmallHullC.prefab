@@ -142,7 +142,7 @@ MonoBehaviour:
   damage: 15
   level: 1
   maxLevel: 3
-  upgradeCost: 50
+  upgradeCost: 100
   slowPercentage: 0
   slowDuration: 0
   projectilePrefab: {fileID: 6293430230584942012, guid: fab9ef3bffd61ca4ca926d844d5fc3a9, type: 3}

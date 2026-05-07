@@ -7,7 +7,7 @@ public class EnemyHealth : MonoBehaviour
 
     public int rewardGold = 10;
 
-    // Dodajemy tylko zmienn¹ do grafiki
+    
     private SpriteRenderer spriteRenderer;
 
     private void Start()
@@ -24,15 +24,15 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log(gameObject.name + " dostal obrazenia! Zostalo HP: " + currentHealth);
 
-        // --- NASZ DODATEK: Zmiana koloru przy uderzeniu ---
+        
         if (spriteRenderer != null)
         {
-            // Liczymy procent zdrowia (np. 50 / 100 = 0.5)
+            
             float healthPercentage = currentHealth / maxHealth;
-            // Lerp miesza kolor czerwony (0% HP) z bia³ym (100% HP)
+            
             spriteRenderer.color = Color.Lerp(Color.red, Color.white, healthPercentage);
         }
-        // --------------------------------------------------
+        
 
         if (currentHealth <= 0)
         {
