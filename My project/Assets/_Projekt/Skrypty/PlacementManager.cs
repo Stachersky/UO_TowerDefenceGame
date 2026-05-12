@@ -26,7 +26,7 @@ public class PlacementManager : MonoBehaviour
         else
         {
             Debug.Log("Nie staæ Ciê! Potrzebujesz: " + towerCost);
-            // Tu w przysz³oœci (KAN-30) dodasz informacjê na ekranie (UI)
+            
         }
     }
 

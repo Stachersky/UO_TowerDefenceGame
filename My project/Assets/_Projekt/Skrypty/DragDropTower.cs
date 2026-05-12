@@ -28,17 +28,15 @@ public class DragDropTower : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             dragPreview.transform.localScale = towerPrefab.transform.localScale;
         }
 
-        // --- KLUCZOWA POPRAWKA ---
-        // Zamiast gigantycznego kó³ka zasiêgu, dodajemy ma³y kwadrat (BoxCollider).
-        // Unity automatycznie dopasuje jego wielkoœæ do rozmiaru obrazka wie¿y!
+       
         BoxCollider2D col = dragPreview.AddComponent<BoxCollider2D>();
         col.isTrigger = true;
-        // Zmniejszamy hitboxa o 20%, ¿eby mo¿na by³o stawiaæ wie¿e bardzo blisko œcie¿ki
+       
         col.size = col.size * 0.8f;
-        // -------------------------
+        
 
         Rigidbody2D rb = dragPreview.AddComponent<Rigidbody2D>();
-        rb.isKinematic = true;
+        rb.bodyType = RigidbodyType2D.Kinematic;
 
         dragPreview.AddComponent<PlacementValidator>();
 

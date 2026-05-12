@@ -8,20 +8,20 @@ public class EnemySpawner : MonoBehaviour
     public Transform spawnPoint;
     public Transform[] waypoints;
 
-    [Header("System Fal (KAN-38 i KAN-41)")]
-    public int maxWaves = 40;                // NOWOŒÆ: Cel gry!
+    [Header("System Fal")]
+    public int maxWaves = 40;
     public int baseEnemies = 3;
     public int enemiesMultiplier = 2;
     public float timeBetweenEnemies = 1f;
 
-    [Header("Timer Fal (KAN-39)")]
+    [Header("Timer Fal")]
     public float timeBetweenWaves = 5f;
     public float countdown = 3f;
 
     public int waveIndex = 1;
     public bool isSpawning = false;
 
-    [Header("Skalowanie Przeciwników (KAN-42, KAN-43)")]
+    [Header("Skalowanie Przeciwników")]
     public float hpBonusPer5Waves = 0.25f;
     public float speedBonusPer10Waves = 0.15f;
 
