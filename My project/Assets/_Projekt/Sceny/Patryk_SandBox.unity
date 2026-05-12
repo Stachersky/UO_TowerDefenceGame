@@ -1081,7 +1081,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 992245050708790182, guid: 0c827821ed4a5df4aa6493eacd323ace, type: 3}
-  towerCost: 50
+  towerCost: 300
 --- !u!114 &847235770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2971,7 +2971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 1568553849184497111, guid: b427366414075a84aafb1928bafc1a11, type: 3}
-  towerCost: 50
+  towerCost: 150
 --- !u!114 &1849497616
 MonoBehaviour:
   m_ObjectHideFlags: 0
