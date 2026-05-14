@@ -7,32 +7,31 @@ public class EnemyHealth : MonoBehaviour
 
     public int rewardGold = 10;
 
-    
     private SpriteRenderer spriteRenderer;
+    private bool isDead = false;
 
     private void Start()
     {
         currentHealth = maxHealth;
-
-        // Na starcie pobieramy grafikê wroga, ¿eby móc j¹ kolorowaæ
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void TakeDamage(float damageAmount)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         currentHealth -= damageAmount;
 
-        Debug.Log(gameObject.name + " dostal obrazenia! Zostalo HP: " + currentHealth);
+        Debug.Log(gameObject.name + " dosta³ obra¿enia! Zosta³o HP: " + currentHealth);
 
-        
         if (spriteRenderer != null)
         {
-            
             float healthPercentage = currentHealth / maxHealth;
-            
             spriteRenderer.color = Color.Lerp(Color.red, Color.white, healthPercentage);
         }
-        
 
         if (currentHealth <= 0)
         {
@@ -42,7 +41,19 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        if (isDead)
+        {
+            return;
+        }
+
+        isDead = true;
+
         Debug.Log("Przeciwnik pokonany!");
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayEnemyDeath();
+        }
 
         if (PlayerCurrency.Instance != null)
         {

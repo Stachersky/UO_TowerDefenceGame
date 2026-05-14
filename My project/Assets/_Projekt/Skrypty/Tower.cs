@@ -22,6 +22,9 @@ public class Tower : MonoBehaviour
     [Header("Pocisk")]
     public GameObject projectilePrefab;
 
+    [Header("DŸwiêk strza³u")]
+    public AudioClip shootSound;
+
     [Header("Tekst poziomu nad wie¿¹")]
     public TextMeshPro levelText;
 
@@ -35,7 +38,7 @@ public class Tower : MonoBehaviour
     private Color originalColor;
     private Vector3 originalScale;
 
-    void Start()
+    private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -49,7 +52,7 @@ public class Tower : MonoBehaviour
         UpdateLevelText();
     }
 
-    void Update()
+    private void Update()
     {
         UpdateTarget();
 
@@ -65,7 +68,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    void Shoot()
+    private void Shoot()
     {
         GameObject bulletGO = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         Projectile projectile = bulletGO.GetComponent<Projectile>();
@@ -74,9 +77,14 @@ public class Tower : MonoBehaviour
         {
             projectile.Seek(currentTarget.transform, damage, slowPercentage, slowDuration);
         }
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySfx(shootSound);
+        }
     }
 
-    void UpdateTarget()
+    private void UpdateTarget()
     {
         enemiesInRange.RemoveAll(item => item == null);
 
@@ -93,7 +101,10 @@ public class Tower : MonoBehaviour
 
     private void OnMouseDown()
     {
-        UpgradeUIManager.Instance.SelectTower(this);
+        if (UpgradeUIManager.Instance != null)
+        {
+            UpgradeUIManager.Instance.SelectTower(this);
+        }
     }
 
     public void UpgradeTower()
@@ -101,6 +112,12 @@ public class Tower : MonoBehaviour
         if (level >= maxLevel)
         {
             Debug.Log("Wie¿a ma maksymalny poziom.");
+
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayNotEnoughGold();
+            }
+
             return;
         }
 
@@ -123,11 +140,21 @@ public class Tower : MonoBehaviour
 
             StartCoroutine(UpgradeEffect());
 
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayUpgradeSuccess();
+            }
+
             Debug.Log("Ulepszono wie¿ê do poziomu: " + level);
         }
         else
         {
             Debug.Log("Za ma³o z³ota na ulepszenie.");
+
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayNotEnoughGold();
+            }
         }
     }
 
@@ -139,7 +166,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    IEnumerator UpgradeEffect()
+    private IEnumerator UpgradeEffect()
     {
         if (spriteRenderer != null)
         {

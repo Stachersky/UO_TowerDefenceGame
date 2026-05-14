@@ -12,9 +12,21 @@ public class DragDropTower : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (PlayerCurrency.Instance == null)
+        {
+            Debug.Log("Brak PlayerCurrency na scenie.");
+            return;
+        }
+
         if (PlayerCurrency.Instance.GetCurrentGold() < towerCost)
         {
             Debug.Log("Za ma³o z³ota!");
+
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayNotEnoughGold();
+            }
+
             return;
         }
 
@@ -28,12 +40,9 @@ public class DragDropTower : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             dragPreview.transform.localScale = towerPrefab.transform.localScale;
         }
 
-       
         BoxCollider2D col = dragPreview.AddComponent<BoxCollider2D>();
         col.isTrigger = true;
-       
         col.size = col.size * 0.8f;
-        
 
         Rigidbody2D rb = dragPreview.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
@@ -79,6 +88,13 @@ public class DragDropTower : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             {
                 GameObject newTower = Instantiate(towerPrefab, finalPosition, Quaternion.identity);
                 newTower.transform.position = new Vector3(finalPosition.x, finalPosition.y, 0f);
+
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlayTowerPlace();
+                }
+
+                Debug.Log("Postawiono wie¿ê!");
             }
             else
             {

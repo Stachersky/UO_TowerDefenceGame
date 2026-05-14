@@ -146,6 +146,7 @@ MonoBehaviour:
   slowPercentage: 0
   slowDuration: 0
   projectilePrefab: {fileID: 6293430230584942012, guid: fab9ef3bffd61ca4ca926d844d5fc3a9, type: 3}
+  shootSound: {fileID: 8300000, guid: fde71278fecd8ce45a4d1ac439d5e58c, type: 3}
   levelText: {fileID: 5280268820611868646}
   enemiesInRange: []
   currentTarget: {fileID: 0}
