@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI resultText;
     public TextMeshProUGUI finalTimeText;
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
         Time.timeScale = 1f;
@@ -24,16 +24,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
-        if (isGameOver) return;
+        if (isGameOver)
+        {
+            return;
+        }
 
         timeElapsed += Time.deltaTime;
     }
 
     public void WinGame()
     {
-        if (isGameOver) return;
+        if (isGameOver)
+        {
+            return;
+        }
 
         isGameOver = true;
         Time.timeScale = 0f;
@@ -43,21 +49,34 @@ public class GameManager : MonoBehaviour
 
     public void LoseGame()
     {
-        if (isGameOver) return;
+        if (isGameOver)
+        {
+            return;
+        }
 
         isGameOver = true;
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayLose();
+        }
+
         Time.timeScale = 0f;
 
         ShowEnd("PRZEGRANA");
     }
 
-    void ShowEnd(string text)
+    private void ShowEnd(string text)
     {
         if (endGamePanel != null)
+        {
             endGamePanel.SetActive(true);
+        }
 
         if (resultText != null)
+        {
             resultText.text = text;
+        }
 
         if (finalTimeText != null)
         {
