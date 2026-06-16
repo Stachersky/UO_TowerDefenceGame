@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI; // Potrzebne do obs³ugi paska (Slider)
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -11,14 +11,14 @@ public class UIManager : MonoBehaviour
 
     [Header("Pasek Zdrowia Bazy")]
     public Slider baseHealthSlider;
-    public BaseHealth baseHealthScript; // Podpinamy bazê, ¿eby znaæ jej HP
+    public BaseHealth baseHealthScript;
 
     [Header("Skrypty z logik¹ gry")]
     public EnemySpawner spawner;
 
     void Start()
     {
-        // Na start ustawiamy maksymalne zdrowie paska (¿eby wiedzia³, co to znaczy 100%)
+       
         if (baseHealthScript != null)
         {
             baseHealthSlider.maxValue = baseHealthScript.health;
@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance != null && GameManager.Instance.isGameOver == false)
         {
-            float time = GameManager.Instance.timeElapsed; // ZMIANA: czytamy czas w górê
+            float time = GameManager.Instance.timeElapsed;
 
             // Formatowanie sekund na minuty i sekundy
             int minutes = Mathf.FloorToInt(time / 60f);
@@ -64,7 +64,7 @@ public class UIManager : MonoBehaviour
     {
         if (baseHealthScript != null)
         {
-            // Aktualizacja zielonego paska
+           
             baseHealthSlider.value = baseHealthScript.health;
         }
     }

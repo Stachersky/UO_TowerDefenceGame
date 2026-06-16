@@ -1,19 +1,19 @@
 using UnityEngine;
-using System.Collections; // BARDZO WA¯NE: Dodano, aby móc u¿ywaæ IEnumerator (czasomierzy)
+using System.Collections;
 
 public class EnemyMovement : MonoBehaviour
 {
     public float speed = 2f;
-    private float originalSpeed; // Zapamiêtuje normaln¹ prêdkoœæ wroga
+    private float originalSpeed;
 
     public Transform[] waypoints;
     private int currentWaypointIndex = 0;
 
-    private Coroutine slowCoroutine; // Przechowuje nasz aktywny stoper spowolnienia
+    private Coroutine slowCoroutine;
 
     void Start()
     {
-        // Zapisujemy prêdkoœæ bazow¹ na samym pocz¹tku
+        
         originalSpeed = speed;
     }
 
@@ -45,10 +45,10 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    // --- NOWA FUNKCJA: Spowalnianie ---
+    // FUNKCJA: Spowalnianie
     public void ApplySlow(float pct, float duration)
     {
-        if (pct <= 0) return; // Jeœli wie¿a nie spowalnia, zignoruj
+        if (pct <= 0) return;
 
         // Obliczamy now¹ prêdkoœæ (np. 0.5 to obciêcie o 50%)
         speed = originalSpeed * (1f - pct);
